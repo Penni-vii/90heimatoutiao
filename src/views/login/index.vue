@@ -56,9 +56,24 @@ export default {
   },
   methods: {
     myformLogin () {
-      this.$refs.hehe.validate(function (isOK) {
+      this.$refs.hehe.validate(isOK => {
         if (isOK) {
-          console.log('表单中的所有数据都校验成功了哦')
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.ruleForm
+          }).then(res => {
+            // console.log(res)
+            // 往本地存储localStorage里存储一下用户的token信息
+            window.localStorage.setItem('user-token', res.data.data.token)
+            // 跳转到主页
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              message: '您的手机号或者验证码填写错误哦~',
+              type: 'warning'
+            })
+          })
         }
       })
     }
