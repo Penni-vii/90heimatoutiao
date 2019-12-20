@@ -10,9 +10,9 @@
   <!-- 右边的这一列里又有一行 -->
   <el-col class="right" :span="12">
     <el-row type="flex" justify="end" align="middle">
-      <img src="../../assets/img/abc.jpg" alt="">
+      <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
       <el-dropdown>
-        <span>Penni-vii</span>
+        <span>{{userInfo.name}}</span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人信息</el-dropdown-item>
           <el-dropdown-item>git地址</el-dropdown-item>
@@ -26,7 +26,25 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      userInfo: {}, // 定义一个用户对象
+      defaultImg: require('../../assets/img/abc.jpg') // 如果用户信息中没有头像，默认使用这个头像。
+    }
+  },
+  // 页面一上来先调用接口，将用户的信息展示到右上角的信息处
+  created () {
+    let token = localStorage.getItem('user-token')
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      console.log(res)
+      this.userInfo = res.data.data
+    })
+  }
 }
 </script>
 
