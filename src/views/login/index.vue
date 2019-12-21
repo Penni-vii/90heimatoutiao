@@ -63,7 +63,7 @@ export default {
             method: 'post',
             data: this.ruleForm
           }).then(res => {
-            console.log(res)
+            // console.log(res)
             // 往本地存储localStorage里存储一下用户的token信息
             window.localStorage.setItem('user-token', res.data.data.token)
             // 跳转到主页
