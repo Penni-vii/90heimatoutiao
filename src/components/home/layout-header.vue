@@ -11,12 +11,12 @@
   <el-col class="right" :span="12">
     <el-row type="flex" justify="end" align="middle">
       <img :src="userInfo.photo?userInfo.photo:defaultImg" alt="">
-      <el-dropdown>
+      <el-dropdown @command="xixi">
         <span>{{userInfo.name}}</span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>git地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="info">个人信息</el-dropdown-item>
+          <el-dropdown-item command="git">git地址</el-dropdown-item>
+          <el-dropdown-item command="quit">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-row>
@@ -44,6 +44,18 @@ export default {
       console.log(res)
       this.userInfo = res.data.data
     })
+  },
+  methods: {
+    xixi (command) {
+      if (command === 'info') {
+
+      } else if (command === 'git') {
+        location.href = 'https://github.com/Penni-vii/90heimatoutiao'
+      } else {
+        localStorage.removeItem('user-token') // 删除token
+        this.$router.push('/login') // 回到登录页
+      }
+    }
   }
 }
 </script>
