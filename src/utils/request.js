@@ -1,6 +1,7 @@
 import axios from 'axios'
 import router from '../router' // 要用router实例，所以先引入
 import { Message } from 'element-ui'
+import JSONBig from 'json-bigint' // 引入第三方包，处理数据的失真问题
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 给axios设置一个基地址。
 
 // 请求拦截 config是请求的各项参数配置
@@ -12,6 +13,12 @@ axios.interceptors.request.use(function (config) {
 }, function () {
   // 请求失败时
 })
+
+// 处理id过长时js处理数据时数据失真的问题
+// `transformResponse` 在传递给 then/catch 前，允许修改响应数据
+axios.defaults.transformResponse = [function (data) {
+  return data ? JSONBig.parse(data) : {} // 处理数据失真的问题
+}]
 
 // 响应拦截
 axios.interceptors.response.use(function (response) {
@@ -39,6 +46,7 @@ axios.interceptors.response.use(function (response) {
       break
   }
   Message({ type: 'warning', message }) // 提示信息
+  return Promise.reject(error) // 这里要注意处理，不然会一直走到then中，不往catch中走
 })
 
 export default axios // 记得最后一定要导出！！！
