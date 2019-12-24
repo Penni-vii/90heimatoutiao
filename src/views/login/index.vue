@@ -65,14 +65,9 @@ export default {
           }).then(res => {
             // console.log(res)
             // 往本地存储localStorage里存储一下用户的token信息
-            window.localStorage.setItem('user-token', res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.token)
             // 跳转到主页
             this.$router.push('/home')
-          }).catch(() => {
-            this.$message({
-              message: '您的手机号或者验证码填写错误哦~',
-              type: 'warning'
-            })
           })
         }
       })

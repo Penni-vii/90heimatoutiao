@@ -34,15 +34,12 @@ export default {
   },
   // 页面一上来先调用接口，将用户的信息展示到右上角的信息处
   created () {
-    let token = localStorage.getItem('user-token')
     this.$axios({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: '/user/profile'
     }).then(res => {
+      // debugger
       // console.log(res)
-      this.userInfo = res.data.data
+      this.userInfo = res.data
     })
   },
   methods: {
