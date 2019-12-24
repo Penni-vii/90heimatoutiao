@@ -6,8 +6,8 @@ import ElementUI from 'element-ui' // 引入element-ui
 import component from './components' // 引入component
 import 'element-ui/lib/theme-chalk/index.css' // 引入element-ui的样式
 import './styles/index.less' // 引入基础样式文件。
-import axios from 'axios'
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 给axios设置一个基地址。
+import axios from './utils/request'
+
 Vue.use(ElementUI) // 全局注册element-ui
 Vue.use(component) // 全局注册component
 
