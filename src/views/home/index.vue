@@ -2,7 +2,7 @@
 <!-- 整个页面的大容器 -->
 <el-container>
   <!-- 左侧导航 -->
-  <el-aside style="height:100vh;background-color:#353b4e;width:230px;">
+  <el-aside style="min-height:100vh;background-color:#353b4e;width:230px;">
     <layout-aside></layout-aside>
   </el-aside>
   <!-- 右侧容器 -->
