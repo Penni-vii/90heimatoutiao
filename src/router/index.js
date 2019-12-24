@@ -12,7 +12,9 @@ const routes = [
   { path: '/home',
     component: home,
     children: [
-      { path: '', component: home2 }
+      { path: '', component: home2 },
+      // 这个组件评论管理组件是按需加载的
+      { path: 'comment', component: () => import('../views/comment') }
     ]
   }
 ]
