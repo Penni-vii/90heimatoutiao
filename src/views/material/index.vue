@@ -19,8 +19,8 @@
          <el-card class="img-card" v-for="item in list" :key="item.id">
            <img :src="item.url" alt="">
            <el-row class="haha" type="flex" align="middle" justify="space-around">
-             <i class="el-icon-star-on"></i>
-             <i class="el-icon-delete-solid"></i>
+             <i @click="collectOrCancel(item)" :style="{color: item.is_collected ? 'red' : '#000'}" class="el-icon-star-on"></i>
+             <i @click="delMaterial(item.id)" class="el-icon-delete-solid"></i>
            </el-row>
          </el-card>
        </div>
@@ -60,6 +60,27 @@ export default {
     }
   },
   methods: {
+    // 点击删除字体图标时的事件
+    delMaterial (id) {
+      this.$confirm('你确定要删除此图片吗？').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${id}`
+        }).then(res => {
+          this.getMaterial()
+        })
+      })
+    },
+    // 点击收藏的小星星时的事件
+    collectOrCancel (item) {
+      this.$axios({
+        method: 'put',
+        url: `/user/images/${item.id}`,
+        data: { collect: !item.is_collected }
+      }).then(res => {
+        this.getMaterial() // 重新拉取数据
+      })
+    },
     // 上传文件的方法
     uploadImg (params) {
       this.loading = true
