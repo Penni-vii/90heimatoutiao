@@ -16,7 +16,9 @@ const routes = [
       // 评论管理组件 按需加载的
       { path: 'comment', component: () => import('../views/comment') },
       // 素材管理组件 按需加载的
-      { path: 'material', component: () => import('../views/material') }
+      { path: 'material', component: () => import('../views/material') },
+      // 文章列表组件 按需加载的
+      { path: 'articles', component: () => import('../views/articles') }
     ]
   }
 ]
