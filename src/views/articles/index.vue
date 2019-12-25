@@ -38,13 +38,13 @@
         共找到10000条符合条件的内容
       </span>
     </el-row>
-    <div class="article-item" v-for="item in 10" :key="item">
+    <div class="article-item" v-for="item in list" :key="item.id.toString()">
       <div class="left">
-        <img src="../../assets/img/abc.jpg" alt="">
+        <img :src="item.cover.images ? item.cover.images[0] : defaultImg" alt="">
         <div class="info">
-          <span>哈哈哈哈</span>
-          <el-tag>已发表</el-tag>
-          <div class="date">2019-12-24 15:07:01</div>
+          <span>{{item.title}}</span>
+          <el-tag :type="item.status | filterType" class="tag">{{item.status | filterStatus}}</el-tag>
+          <div class="date">{{item.pubdate}}</div>
         </div>
       </div>
       <div class="right">
@@ -64,10 +64,51 @@ export default {
         channel_id: null, // 默认不选中任何一个频道
         dateRange: [] // 时间范围，因为默认生成的就是一个数组，所以拿一个空数组来接收它
       },
-      channel: [] // 定义一个数组来接收文章频道的数据
+      channel: [], // 定义一个数组来接收文章频道的数据
+      list: [], // 获取文章列表的数据
+      defaultImg: require('../../assets/img/xixi.jpg')
+    }
+  },
+  filters: {
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      // 根据文章状态选择tag标签的样式类型
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
     }
   },
   methods: {
+    // 获取所有的文章列表
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(res => {
+        this.list = res.data.results
+      })
+    },
     // 获取文章频道的方法
     getChannel () {
       this.$axios({
@@ -79,6 +120,7 @@ export default {
   },
   created () {
     this.getChannel()
+    this.getArticles()
   }
 }
 </script>
