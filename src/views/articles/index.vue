@@ -100,7 +100,30 @@ export default {
       }
     }
   },
+  watch: {
+    searchForm: {
+      deep: true,
+      handler () {
+        this.changeCondition() // data中的searchForm对象中的数据一旦发生变化，就调用这个handler函数，就调用一次改变条件的函数changeCondition()
+      }
+    }
+  },
   methods: {
+    // 改变条件
+    changeCondition () {
+      this.page.currentPage = 1
+      this.getArticlesCondition()
+    },
+    // 根据筛选条件获取文章列表的方法
+    getArticlesCondition () {
+      let params = {
+        status: this.searchForm.status === 5 ? null : this.searchForm.status,
+        channel_id: this.searchForm.channel_id,
+        begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null,
+        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null
+      }
+      this.getArticles(params)
+    },
     // 获取所有的文章列表
     getArticles () {
       this.$axios({
