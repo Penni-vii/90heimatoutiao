@@ -1,5 +1,5 @@
 <template>
- <el-card>
+ <el-card class="articles">
    <!-- 头部面包屑组件 -->
    <bread-crumb slot="header">
     <template slot="title">
@@ -32,6 +32,26 @@
        <el-date-picker value-format="yyyy-MM-dd" v-model="searchForm.dateRange" type="daterange"></el-date-picker>
      </el-form-item>
    </el-form>
+   <!-- 下面的手写页面 -->
+    <el-row class="total" type="flex" align="middle">
+      <span>
+        共找到10000条符合条件的内容
+      </span>
+    </el-row>
+    <div class="article-item" v-for="item in 10" :key="item">
+      <div class="left">
+        <img src="../../assets/img/abc.jpg" alt="">
+        <div class="info">
+          <span>哈哈哈哈</span>
+          <el-tag>已发表</el-tag>
+          <div class="date">2019-12-24 15:07:01</div>
+        </div>
+      </div>
+      <div class="right">
+        <span><i class="el-icon-edit">修改</i></span>
+        <span><i class="el-icon-delete">删除</i></span>
+      </div>
+    </div>
  </el-card>
 </template>
 
@@ -63,6 +83,47 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.articles {
+  .total {
+    height: 60px;
+    border-bottom: 1px dashed #ccc;
+  }
+  .article-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid #f2f3f5;
+      .left {
+          display: flex;
+          img {
+              width: 180px;
+              height: 100px;
+              border-radius: 4px;
+          }
+          .info {
+              height: 100px;
+              margin-left: 10px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              .date {
+                  color: #999;
+                  font-size:12px;
+              }
+              .tag {
+                  text-align: center;
+                  width:60px;
+              }
+          }
+      }
+      .right {
+          span {
+              font-size:14px;
+              margin-right: 8px;
+              cursor: pointer;
+          }
+      }
+  }
+}
 </style>
