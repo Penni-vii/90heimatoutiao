@@ -49,7 +49,7 @@
       </div>
       <div class="right">
         <span><i class="el-icon-edit">修改</i></span>
-        <span><i class="el-icon-delete">删除</i></span>
+        <span @click="delMaterial(item.id)"><i class="el-icon-delete">删除</i></span>
       </div>
     </div>
     <!-- 分页组件 -->
@@ -124,6 +124,21 @@ export default {
     }
   },
   methods: {
+    // 删除方法
+    delMaterial (id) {
+      this.$confirm('您确定要删除吗？').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/articles/${id.toString()}`
+        }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功！！！'
+          })
+          this.getArticlesCondition()
+        })
+      })
+    },
     // 用户点击页码时，获取到最新的页码，再重新请求数据
     changePage (newPage) {
       this.page.currentPage = newPage
