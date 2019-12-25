@@ -40,7 +40,7 @@
     </el-row>
     <div class="article-item" v-for="item in list" :key="item.id.toString()">
       <div class="left">
-        <img :src="item.cover.images ? item.cover.images[0] : defaultImg" alt="">
+        <img :src="item.cover.images.length ? item.cover.images[0] : defaultImg" alt="">
         <div class="info">
           <span>{{item.title}}</span>
           <el-tag :type="item.status | filterType" class="tag">{{item.status | filterStatus}}</el-tag>
@@ -52,6 +52,16 @@
         <span><i class="el-icon-delete">删除</i></span>
       </div>
     </div>
+    <!-- 分页组件 -->
+    <el-row type="flex" justify="center" align="middle" style="height:60px">
+      <el-pagination background layout="prev, pager, next"
+      :total="page.total"
+      :page-size="page.pageSize"
+      :current-page="page.currentPage"
+      @current-change="changePage"
+      >
+      </el-pagination>
+    </el-row>
  </el-card>
 </template>
 
@@ -66,7 +76,12 @@ export default {
       },
       channel: [], // 定义一个数组来接收文章频道的数据
       list: [], // 获取文章列表的数据
-      defaultImg: require('../../assets/img/xixi.jpg')
+      defaultImg: require('../../assets/img/xixi.jpg'), // 如果没有图片的话，显示这个默认图片
+      page: {
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
     }
   },
   filters: {
@@ -109,6 +124,11 @@ export default {
     }
   },
   methods: {
+    // 用户点击页码时，获取到最新的页码，再重新请求数据
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getArticlesCondition()
+    },
     // 改变条件
     changeCondition () {
       this.page.currentPage = 1
@@ -120,16 +140,20 @@ export default {
         status: this.searchForm.status === 5 ? null : this.searchForm.status,
         channel_id: this.searchForm.channel_id,
         begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null,
-        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null
+        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null,
+        per_page: this.page.pageSize, // 每页数量
+        page: this.page.currentPage // 当前页数
       }
       this.getArticles(params)
     },
     // 获取所有的文章列表
-    getArticles () {
+    getArticles (params) {
       this.$axios({
-        url: '/articles'
+        url: '/articles',
+        params
       }).then(res => {
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     },
     // 获取文章频道的方法
