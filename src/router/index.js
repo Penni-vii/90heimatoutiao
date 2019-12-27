@@ -20,7 +20,9 @@ const routes = [
       // 文章列表组件 按需加载的
       { path: 'articles', component: () => import('../views/articles') },
       // 发布文章组件 按需加载的
-      { path: 'publish', component: () => import('../views/publish') }
+      { path: 'publish', component: () => import('../views/publish') },
+      // 修改文章组件 按需加载的
+      { path: 'publish/:articleId', component: () => import('../views/publish') }
     ]
   }
 ]

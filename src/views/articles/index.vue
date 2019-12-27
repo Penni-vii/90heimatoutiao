@@ -35,7 +35,7 @@
    <!-- 下面的手写页面 -->
     <el-row class="total" type="flex" align="middle">
       <span>
-        共找到10000条符合条件的内容
+        共找到{{page.total}}条符合条件的内容
       </span>
     </el-row>
     <div class="article-item" v-for="item in list" :key="item.id.toString()">
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="right">
-        <span><i class="el-icon-edit">修改</i></span>
+        <span @click="toModify(item.id)"><i class="el-icon-edit">修改</i></span>
         <span @click="delMaterial(item.id)"><i class="el-icon-delete">删除</i></span>
       </div>
     </div>
@@ -124,6 +124,11 @@ export default {
     }
   },
   methods: {
+    // 修改文章的功能
+    toModify (id) {
+      // 点击之后去到发布文章的页面
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 删除方法
     delMaterial (id) {
       this.$confirm('您确定要删除吗？').then(() => {

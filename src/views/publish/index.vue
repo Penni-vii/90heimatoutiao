@@ -1,5 +1,5 @@
 <template>
-<el-card>
+<el-card v-loading="loading">
   <!-- 头部 -->
   <bread-crumb slot="header">
     <template slot="title">
@@ -40,6 +40,7 @@
 export default {
   data () {
     return {
+      loading: false,
       channel: [], // 定义一个数组来接收频道数据
       formData: { // 要校验的表单数据对象
         title: '', // 标题
@@ -55,6 +56,24 @@ export default {
         title: [{ required: true, message: '文章标题不能为空' }, { min: 5, max: 30, message: '标题的长度在5到30个字符之间' }],
         content: [{ required: true, message: '文章内容不能为空' }],
         channel_id: [{ required: true, message: '文章内容不能为空' }]
+      }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      if (to.params.articleId) {
+        // 是修改
+      } else {
+        // 是发表
+        this.formData = {
+          title: '', // 标题
+          content: '', // 内容
+          cover: { // 封面
+            type: 0, // 封面类型 -1:自动，0-无图，1-1张，3-3张
+            images: [] // 放置封面地址的数组
+          },
+          channel_id: null // 频道id
+        }
       }
     }
   },
@@ -87,10 +106,24 @@ export default {
       }).then(res => {
         this.channel = res.data.channels
       })
+    },
+    // 根据文章id获取文章信息
+    getArticleById (articleId) {
+      this.loading = true // 开启加载
+      this.$axios({
+        url: `/articles/${articleId}`,
+        params: { target: articleId }
+      }).then(res => {
+        this.loading = false // 关闭加载
+        this.formData = res.data
+      })
     }
   },
   created () {
     this.getChannels()
+    // 页面一上来就先获取到传过来的文章id
+    let articleId = this.$route.params.articleId // 获取动态路由参数
+    articleId && this.getArticleById(articleId)// 如果文章id存在，直接根据这个id查询文章信息
   }
 }
 </script>
