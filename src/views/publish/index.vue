@@ -82,10 +82,12 @@ export default {
     publishArticle (draft) {
       this.$refs.form.validate(isOK => {
         if (isOK) {
+          // 首先先判断一下是修改还是发布文章
+          let articleId = this.$route.params.articleId // 获取到动态路由参数
           // 调用发布接口
           this.$axios({
-            method: 'post',
-            url: '/articles',
+            method: articleId ? 'put' : 'post',
+            url: articleId ? `/articles/${articleId}` : '/articles',
             params: { draft },
             data: this.formData
           }).then(res => {
