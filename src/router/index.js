@@ -18,7 +18,9 @@ const routes = [
       // 素材管理组件 按需加载的
       { path: 'material', component: () => import('../views/material') },
       // 文章列表组件 按需加载的
-      { path: 'articles', component: () => import('../views/articles') }
+      { path: 'articles', component: () => import('../views/articles') },
+      // 发布文章组件 按需加载的
+      { path: 'publish', component: () => import('../views/publish') }
     ]
   }
 ]
