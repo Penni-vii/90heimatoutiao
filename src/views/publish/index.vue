@@ -24,7 +24,7 @@
       </el-radio-group>
     </el-form-item>
     <!-- 封面组件 子组件 -->
-    <cover-image :list="formData.cover.images"></cover-image>
+    <cover-image @selectImgUrl="getSelectImg" :list="formData.cover.images"></cover-image>
     <el-form-item prop="channel_id" label="频道">
       <el-select v-model="formData.channel_id" placeholder="请选择">
         <el-option v-for="item in channel" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -80,6 +80,14 @@ export default {
     }
   },
   methods: {
+    // 通过这个方法来获取到子组件cover-image传递过来的数据
+    getSelectImg (url, index) {
+      // alert('这是select-image组件传递过来的图片地址' + url)
+      // this.formData.cover.iamges是一个数组，所以可以使用map方法
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => {
+        return index === i ? url : item
+      })
+    },
     // 监听 封面类型的改变
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
