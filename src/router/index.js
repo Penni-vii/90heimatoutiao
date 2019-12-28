@@ -22,7 +22,9 @@ const routes = [
       // 发布文章组件 按需加载的
       { path: 'publish', component: () => import('../views/publish') },
       // 修改文章组件 按需加载的
-      { path: 'publish/:articleId', component: () => import('../views/publish') }
+      { path: 'publish/:articleId', component: () => import('../views/publish') },
+      // 账户信息组件 按需加载的
+      { path: 'account', component: () => import('../views/account') }
     ]
   }
 ]
