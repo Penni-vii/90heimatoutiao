@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -64,6 +65,8 @@ export default {
       }).then(res => {
         this.loading = false
         this.formData.photo = res.data.photo
+        // a组件中，触发了eventBus，认为保存成功，通知b组件，要更新了
+        eventBus.$emit('changeImg')
       })
     },
     // 保存用户信息
@@ -79,6 +82,8 @@ export default {
             type: 'success',
             message: '保存信息成功'
           })
+          // 认为保存成功 => 通知header组件 更新信息
+          eventBus.$emit('changeImg')
         })
       })
     },

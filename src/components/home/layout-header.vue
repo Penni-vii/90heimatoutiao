@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -32,17 +33,25 @@ export default {
       defaultImg: require('../../assets/img/abc.jpg') // 如果用户信息中没有头像，默认使用这个头像。
     }
   },
-  // 页面一上来先调用接口，将用户的信息展示到右上角的信息处
   created () {
-    this.$axios({
-      url: '/user/profile'
-    }).then(res => {
-      // debugger
-      // console.log(res)
-      this.userInfo = res.data
+    this.getUserInfo()
+    // 开启监听
+    eventBus.$on('changeImg', () => {
+      // 认为别人更新了数据 自己也应该更新
+      this.getUserInfo()
     })
   },
   methods: {
+    // 页面一上来先调用接口，将用户的信息展示到右上角的信息处
+    getUserInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(res => {
+      // debugger
+      // console.log(res)
+        this.userInfo = res.data
+      })
+    },
     xixi (command) {
       if (command === 'info') {
 
