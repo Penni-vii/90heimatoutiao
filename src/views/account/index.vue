@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <!-- 头部组件 -->
     <bread-crumb slot="header">
       <template slot="title">
@@ -35,6 +35,7 @@
 export default {
   data () {
     return {
+      loading: false,
       formData: {
         name: '', // 用户名
         intro: '', // 简介
@@ -52,8 +53,18 @@ export default {
   },
   methods: {
     // 上传头像
-    uploadImg () {
-
+    uploadImg (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$axios({
+        url: 'user/photo',
+        method: 'patch',
+        data: data
+      }).then(res => {
+        this.loading = false
+        this.formData.photo = res.data.photo
+      })
     },
     // 保存用户信息
     saveInfo () {
