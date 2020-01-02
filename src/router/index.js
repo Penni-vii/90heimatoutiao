@@ -8,6 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', redirect: '/home' },
+  { path: '*', component: () => import('../views/404') }, // 匹配任何地址 但是如果其他的可以匹配 优先匹配其他 否则匹配该组件
   { path: '/login', component: login },
   { path: '/home',
     component: home,
