@@ -2,6 +2,7 @@ import router from '../router' // 引入路由表
 import progress from 'nprogress' // 引入进度条
 import 'nprogress/nprogress.css' // 引入进度条的样式文件
 
+// 全局前置守卫
 router.beforeEach((to, from, next) => {
   // 当路由发生变化的时候，开启进度条
   progress.start()
@@ -16,6 +17,8 @@ router.beforeEach((to, from, next) => {
     next() // 不拦截，直接放行
   }
 })
+
+// 全局后置守卫
 router.afterEach(() => {
   // 关闭进度条
   progress.done()
