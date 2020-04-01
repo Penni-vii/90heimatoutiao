@@ -7,8 +7,8 @@ axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 给axios�
 // 请求拦截 config是请求的各项参数配置
 axios.interceptors.request.use(function (config) {
   // 请求成功时
-  let token = window.localStorage.getItem('user-token')
-  config.headers.Authorization = `Bearer ${token}`
+  let token = window.localStorage.getItem('user-token') // 取token
+  config.headers.Authorization = `Bearer ${token}` // 统一注入token
   return config
 }, function () {
   // 请求失败时
